@@ -1,0 +1,92 @@
+SEMAPHORE(I=0) =
+	
+	SEMAPHORE[I],
+
+	SEMAPHORE[ b : 0..1 ] = (
+		  when b == 0 up -> SEMAPHORE[1]
+		| when b == 1 down -> SEMAPHORE[0] ).
+
+||PAPER =
+
+	( paper:SEMAPHORE(0) )
+	
+	/{ { horacio.paper.down, edgar.paper.down }/paper.down,
+ 	   agatha.paper.up/paper.up }.
+
+||TOBACCO =
+
+	( tobacco:SEMAPHORE(0) )
+	
+	/{ { arthur.tobacco.down, edgar.tobacco.down }/tobacco.down,
+	   agatha.tobacco.up/tobacco.up }.
+
+||SPARK =
+
+	( spark:SEMAPHORE(0) )
+	
+	/{ { horacio.spark.down, arthur.spark.down }/spark.down,
+	   agatha.spark.up/spark.up }.
+
+||RESOURCES =
+
+	(  PAPER
+	|| TOBACCO
+	|| SPARK ).
+
+AGATHA =
+
+	( agatha.selects ->
+	  agatha.paper.up ->
+	  agatha.spark.up ->  AGATHA
+
+	| agatha.selects ->
+	  agatha.spark.up ->
+	  agatha.tobacco.up -> AGATHA
+
+	| agatha.selects ->
+	  agatha.tobacco.up ->
+	  agatha.paper.up -> AGATHA ).
+
+HORACIO =
+
+	( horacio.paper.down ->
+	  horacio.spark.down ->
+	  horacio.smokes ->
+	  horacio.stubs.out -> HORACIO ).
+
+ARTHUR =
+
+	( arthur.spark.down ->
+	  arthur.tobacco.down ->
+	  arthur.smokes ->
+	  arthur.stubs.out -> ARTHUR ).
+
+EDGAR =
+
+	( edgar.tobacco.down ->
+	  edgar.paper.down ->
+	  edgar.smokes ->
+	  edgar.stubs.out -> EDGAR ).
+
+||SMOKERS =
+
+	(  HORACIO
+	|| ARTHUR
+	|| EDGAR ).
+
+
+||CONSTRAINTS =
+
+	( agatha.select:SEMAPHORE(1) )
+	
+	/{
+	   agatha.selects/agatha.select.down,
+	   { horacio, arthur, edgar }.stubs.out/agatha.select.up
+	}.
+	
+||MYSTERY_WRITERS =
+
+	(  RESOURCES
+	|| AGATHA
+	|| SMOKERS
+	|| CONSTRAINTS ).
