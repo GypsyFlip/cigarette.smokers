@@ -52,11 +52,14 @@ HORACIO =
 	( horacio.paper.down ->
 	  horacio.spark.down ->
 	  horacio.smokes ->
-	  horacio.stubs.out -> HORACIO ).
+	  horacio.stubs.out -> HORACIO 
+
+	  | timeout -> horacio.sparks.up -> horacio.tobacco.up -> HORACIO).
+	  
 
 ARTHUR =
 
-	( arthur.spark.down ->
+	( arthur.spark.down -> 
 	  arthur.tobacco.down ->
 	  arthur.smokes ->
 	  arthur.stubs.out -> ARTHUR ).
@@ -66,7 +69,9 @@ EDGAR =
 	( edgar.tobacco.down ->
 	  edgar.paper.down ->
 	  edgar.smokes ->
-	  edgar.stubs.out -> EDGAR ).
+	  edgar.stubs.out -> EDGAR 
+
+	  | timeout -> edgar.sparks.up -> edgar.tobacco.up -> EDGAR).
 
 ||SMOKERS =
 
