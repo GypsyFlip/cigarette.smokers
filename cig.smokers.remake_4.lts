@@ -1,103 +1,69 @@
+
 SEMAPHORE(I=0) =
-	
-		SEMAPHORE[I],
 
-			SEMAPHORE[ b : 0..1 ] = (
-					  when b == 0 up -> SEMAPHORE[1]
-					  		| when b == 1 down -> SEMAPHORE[0] ).
+SEMAPHORE[I],
 
-							||PAPER =
+SEMAPHORE[ b : 0..1 ] = (
+	  when b == 0 up -> SEMAPHORE[1]
+	| when b == 1 down -> SEMAPHORE[0] ).
 
-								( paper:SEMAPHORE(0) )
-									
-										/{ { horacio.paper.down, edgar.paper.down }/paper.down,
-										 	   agatha.paper.up/paper.up }.
+||PAPER =
+	( paper:SEMAPHORE(0) )
 
-											   ||TOBACCO =
+	/{ { horacio.paper.down, edgar.paper.down }/paper.down,
+	agatha.paper.up/paper.up }.
 
-											   	( tobacco:SEMAPHORE(0) )
-													
-														/{ { arthur.tobacco.down, edgar.tobacco.down }/tobacco.down,
-															   agatha.tobacco.up/tobacco.up }.
+||TOBACCO =
+	( tobacco:SEMAPHORE(0) )
 
-															   ||SPARK =
+	/{ { arthur.tobacco.down, edgar.tobacco.down }/tobacco.down,
+	agatha.tobacco.up/tobacco.up }.
 
-															   	( spark:SEMAPHORE(0) )
-																	
-																		/{ { horacio.spark.down, arthur.spark.down }/spark.down,
-																			   agatha.spark.up/spark.up }.
+||SPARK =
+	( spark:SEMAPHORE(0) )
 
-																			   ||RESOURCES =
+	/{ { horacio.spark.down, arthur.spark.down }/spark.down,
+	agatha.spark.up/spark.up }.
 
-																			   	(  PAPER
-																					|| TOBACCO
-																						|| SPARK ).
+||RESOURCES = (  PAPER || TOBACCO || SPARK ).
 
 
-																						AGATHA = AGATHA[0]
+AGATHA = 
 
-																						AGATHA[i:0..2] =
+	( agatha.selects -> agatha.paper.up -> agatha.spark.up -> hgo ->  AGATHA 
+	| agatha.selects ->	agatha.spark.up -> agatha.tobacco.up -> ago -> AGATHA
+	|  agatha.selects -> agatha.tobacco.up -> agatha.paper.up -> ego -> AGATHA ).
 
-																							( when (i == 0 ) 
-																									( agatha.selects ->
-																											  agatha.paper.up ->
-																											  		  agatha.spark.up ->
-																													  		  hgo ->  AGATHA)
-																															  	| when (i == 1) 
-																																		( agatha.selects ->
-																																				  agatha.spark.up ->
-																																				  		  agatha.tobacco.up -> 
-																																						  		  ago -> AGATHA)
+HORACIO =
+	(	hgo ->
+		horacio.paper.down ->
+		horacio.spark.down ->
+		horacio.smokes ->
+		horacio.stubs.out -> HORACIO ).
 
-																																								      | when (i == 2)
-																																								          	( agatha.selects ->
-																																												  agatha.tobacco.up ->
-																																												  		  agatha.paper.up -> 
-																																														  		  ego -> AGATHA ).
+ARTHUR =
+ 	( 	ago ->
+		arthur.spark.down ->
+		arthur.tobacco.down ->
+		arthur.smokes ->
+		arthur.stubs.out -> ARTHUR ).
 
-																																																  HORACIO =
+EDGAR =
+	( 	ego ->
+		edgar.tobacco.down ->
+		edgar.paper.down ->
+		edgar.smokes ->
+		edgar.stubs.out -> EDGAR ).
 
-																																																  	( hgo ->
-																																																		  horacio.paper.down ->
-																																																		  	  horacio.spark.down ->
-																																																			  	  horacio.smokes ->
-																																																				  	  horacio.stubs.out -> HORACIO ).
-
-																																																					  ARTHUR =
-
-																																																					  	( ago ->
-																																																							  arthur.spark.down ->
-																																																							  	  arthur.tobacco.down ->
-																																																								  	  arthur.smokes ->
-																																																									  	  arthur.stubs.out -> ARTHUR ).
-
-																																																										  EDGAR =
-
-																																																										  	( ego ->
-																																																												  edgar.tobacco.down ->
-																																																												  	  edgar.paper.down ->
-																																																													  	  edgar.smokes ->
-																																																														  	  edgar.stubs.out -> EDGAR ).
-
-																																																															  ||SMOKERS =
-
-																																																															  	(  HORACIO
-																																																																	|| ARTHUR
-																																																																		|| EDGAR ).
+||SMOKERS = ( HORACIO || ARTHUR || EDGAR ).
 
 
-																																																																		||CONSTRAINTS =
+||CONSTRAINTS =
+	( agatha.select:SEMAPHORE(1) )
 
-																																																																			( agatha.select:SEMAPHORE(1) )
-																																																																				
-																																																																					/{
-																																																																						   agatha.selects/agatha.select.down,
-																																																																						   	   { horacio, arthur, edgar }.stubs.out/agatha.select.up
-																																																																							   	}.
-																																																																									
-																																																																									||MYSTERY_WRITERS =
+	/{
+	agatha.selects/agatha.select.down,
+	{ horacio, arthur, edgar }.stubs.out/agatha.select.up
+	}.
 
-																																																																										(  RESOURCES
-																																																																											|| AGATHA
-																																																																												|| SMOKERS
-																																																																													|| CONSTRAINTS ).
+||MYSTERY_WRITERS = ( RESOURCES || AGATHA || SMOKERS || CONSTRAINTS ).
