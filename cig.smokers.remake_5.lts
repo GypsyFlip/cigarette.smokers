@@ -24,23 +24,20 @@ COUNTER[t:0..6] =
 	| agatha.spark.up -> COUNTER[t+2]
 	| agatha.tobacco.up -> COUNTER[t+4]
 	| when (t > 0) s[t].up -> COUNTER[t]
-	| s[3].down -> s[1].down -> s[2].down -> COUNTER[0]
-	| s[5].down -> s[1].down -> s[4].down -> COUNTER[0]
-	| s[6].down -> s[2].down -> s[4].down -> COUNTER[0]
+	| s[3].down -> ( s[1].down -> COUNTER[0] | s[2].down -> COUNTER[0])
+	| s[5].down -> ( s[1].down -> COUNTER[0] | s[4].down -> COUNTER[0])
+	| s[6].down -> ( s[2].down -> COUNTER[0] | s[4].down -> COUNTER[0])
 	).
 
 ||Sarray = (forall[i:1..6] s[i]:SEMAPHORE(0)).
 
-AGATHA =
+AGATHA = 
 	( agatha.selects ->
-	  agatha.paper.up ->
-	  agatha.spark.up ->  AGATHA
-	| agatha.selects ->
-	  agatha.spark.up ->
-	  agatha.tobacco.up -> AGATHA
-	| agatha.selects ->
-	  agatha.tobacco.up ->
-	  agatha.paper.up -> AGATHA ).
+		( agatha.paper.up -> agatha.spark.up ->  AGATHA
+		| agatha.spark.up -> agatha.tobacco.up -> AGATHA
+		| agatha.tobacco.up -> agatha.paper.up -> AGATHA
+		)
+	).
 
 HORACIO =
 	( s[3].down ->
@@ -74,4 +71,5 @@ EDGAR =
 	 	{ horacio, arthur, edgar }.stubs.out/agatha.select.up
 	}.
 
-||MYSTERY_WRITERS =	(  RESOURCES || AGATHA || COUNTER || SMOKERS || CONSTRAINTS || Sarray)<<{s[1].up,s[2].up,s[3].up,s[4].up,s[5].up,s[6].up}.
+||MYSTERY_WRITERS =	(  RESOURCES || AGATHA || COUNTER || SMOKERS || CONSTRAINTS || Sarray)
+	<<{s[1].up,s[2].up,s[3].up,s[4].up,s[5].up,s[6].up}.
