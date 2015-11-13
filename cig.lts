@@ -31,12 +31,20 @@ COUNTER[t:0..6] =
 
 ||Sarray = (forall[i:1..6] s[i]:SEMAPHORE(0)).
 
+/*
 AGATHA = 
 	( agatha.selects ->
 		( agatha.paper.up -> agatha.spark.up ->  AGATHA
 		| agatha.spark.up -> agatha.tobacco.up -> AGATHA
 		| agatha.tobacco.up -> agatha.paper.up -> AGATHA
 		)
+	).
+*/
+
+AGATHA = 
+	( agatha.selects ->  agatha.paper.up -> agatha.spark.up ->  AGATHA
+	| agatha.selects ->  agatha.spark.up -> agatha.tobacco.up -> AGATHA
+	|  agatha.selects ->  agatha.tobacco.up -> agatha.paper.up -> AGATHA
 	).
 
 HORACIO =
