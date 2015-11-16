@@ -56,8 +56,8 @@ public class Smoker extends Thread {
 		sleep(Math.abs(rand.nextLong() % 5));	// smoke for a random amount of time [0..4ms]
 		smokeOrder.append(getName() + ",");
 		System.out.println(getName() + " smokes");
-		counter.select.release();
 		counter.decrease();
+		counter.select.release();
 	    } catch (InterruptedException e) {
 		e.printStackTrace();
 	    }

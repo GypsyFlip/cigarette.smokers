@@ -1,7 +1,7 @@
 import java.util.Random;
 
 public class Agent extends Thread {
-    public static final int doFor = 100;
+    public static final int doFor = 10000;
     private final Counter counter;
     public static StringBuilder smokeOrder = new StringBuilder();
 

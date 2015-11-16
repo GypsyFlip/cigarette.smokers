@@ -23,7 +23,6 @@ public class Counter {
 	horacio.start();
 	arthur.start();
 	edgar.start();
-
     }
 
     public synchronized void increase(Item i) {

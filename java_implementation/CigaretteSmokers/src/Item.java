@@ -14,17 +14,4 @@ public enum Item {
 	}
     }
 
-    public String toString() {
-	switch (this) {
-	case PAPER:
-	    return "Paper";
-	case SPARK:
-	    return "Spark";
-	case TOBACCO:
-	    return "Tobacco";
-	default:
-	    return "";
-	}
-    }
-
 }
