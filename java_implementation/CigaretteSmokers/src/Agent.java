@@ -1,70 +1,57 @@
 import java.util.Random;
-import java.util.concurrent.Semaphore;
 
 public class Agent extends Thread {
-    private int counter = 10;
-    private final Semaphore paper, spark, tobacco, select;
+    public static final int doFor = 100;
+    private final Counter counter;
+    public static StringBuilder smokeOrder = new StringBuilder();
 
-    public Agent(Semaphore select, Semaphore paper, Semaphore spark, Semaphore tobacco) {
-	this.select = select;
-	this.paper = paper;
-	this.spark = spark;
-	this.tobacco = tobacco;
+    public Agent(String name, Counter counter) {
+	super(name);
+	this.counter = counter;
     }
 
     @Override
     public void run() {
 	Random rand = new Random();
 	Double dbl;
-	while (counter > 10) {
+	int i = 0;
+	while (i < doFor) {
 	    dbl = rand.nextDouble();
-	    if (dbl <= 1 / 3) {
-		select.release();
-		try {
-		    paper.acquire();
-		} catch (InterruptedException e) {
-		    // TODO Auto-generated catch block
-		    e.printStackTrace();
-		}
-		try {
-		    spark.acquire();
-		} catch (InterruptedException e) {
-		    // TODO Auto-generated catch block
-		    e.printStackTrace();
-		}
-		counter--;
-	    } else if (dbl <= 2 / 3) {
-		select.release();
-		try {
-		    spark.acquire();
-		} catch (InterruptedException e) {
-		    // TODO Auto-generated catch block
-		    e.printStackTrace();
-		}
-		try {
-		    tobacco.acquire();
-		} catch (InterruptedException e) {
-		    // TODO Auto-generated catch block
-		    e.printStackTrace();
-		}
-		counter--;
-	    } else {
-		select.release();
-		try {
-		    tobacco.acquire();
-		} catch (InterruptedException e) {
-		    // TODO Auto-generated catch block
-		    e.printStackTrace();
-		}
-		try {
-		    paper.acquire();
-		} catch (InterruptedException e) {
-		    // TODO Auto-generated catch block
-		    e.printStackTrace();
-		}
-		counter--;
+	    if (dbl <= 1f / 3f) try {
+		smokeOrder.append("Horacio,");
+		counter.select.acquire();
+		counter.paper.release();
+		counter.increase(Item.PAPER);
+		counter.spark.release();
+		counter.increase(Item.SPARK);
+		i++;
+	    } catch (InterruptedException e1) {
+		e1.printStackTrace();
+	    }
+	    else if (dbl <= 2f / 3f) try {
+		smokeOrder.append("Arthur,");
+		counter.select.acquire();
+		counter.spark.release();
+		counter.increase(Item.SPARK);
+		counter.tobacco.release();
+		counter.increase(Item.TOBACCO);
+		i++;
+	    } catch (InterruptedException e1) {
+		e1.printStackTrace();
+	    }
+	    else try {
+		smokeOrder.append("Edgar,");
+		counter.select.acquire();
+		counter.tobacco.release();
+		counter.increase(Item.TOBACCO);
+		counter.paper.release();
+		counter.increase(Item.PAPER);
+		i++;
+	    } catch (InterruptedException e1) {
+		e1.printStackTrace();
 	    }
 	}
+	counter.killSmokers();
     }
 
 }
