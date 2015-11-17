@@ -59,7 +59,7 @@ public class Smoker extends Thread {
 		counter.decrease();
 		counter.select.release();
 	    } catch (InterruptedException e) {
-		e.printStackTrace();
+		System.out.println(getName() + " was waiting, but didn't get his last smoke...");
 	    }
 
 	}

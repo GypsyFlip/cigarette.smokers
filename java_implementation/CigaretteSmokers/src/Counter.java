@@ -36,16 +36,15 @@ public class Counter {
 	notifyAll();
     }
 
-    @SuppressWarnings("deprecation")
     public synchronized void killSmokers() {
 	Smoker.running = false;
 	try {
-	    horacio.join(500);
-	    arthur.join(500);
-	    edgar.join(500);
-	    horacio.stop();
-	    arthur.stop();
-	    edgar.stop();
+	    horacio.join(100);
+	    arthur.join(100);
+	    edgar.join(100);
+	    horacio.interrupt();
+	    arthur.interrupt();
+	    edgar.interrupt();
 	} catch (InterruptedException e) {
 	    e.printStackTrace();
 	}
