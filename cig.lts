@@ -70,12 +70,12 @@ EDGAR =
 ||SMOKERS =	( HORACIO || ARTHUR || EDGAR ).
 
 ||CONSTRAINTS = ( agatha.select:SEMAPHORE(1) )
-					/{ agatha.selects/agatha.select.down,
-	 				 { horacio, arthur, edgar }.stubs.out/agatha.select.up}.
+		/{ agatha.selects/agatha.select.down,
+	 	{ horacio, arthur, edgar }.stubs.out/agatha.select.up}.
 	 				 
 
-||MYSTERY_WRITERS =	(  RESOURCES || AGATHA || COUNTER || SMOKERS || CONSTRAINTS || Sarray)
-	<<{s[1].up,s[2].up,s[3].up,s[4].up,s[5].up,s[6].up}.
+||MYSTERY_WRITERS = (  RESOURCES || AGATHA || COUNTER || SMOKERS || CONSTRAINTS || Sarray)
+		    <<{s[1].up,s[2].up,s[3].up,s[4].up,s[5].up,s[6].up}.
 
 
 //Asserting every smokers can smoke infinetely many times
