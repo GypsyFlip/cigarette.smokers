@@ -18,6 +18,8 @@ SEMAPHORE[ b : 0..1 ] =
 
 ||RESOURCES = (  PAPER || TOBACCO || SPARK ).
 
+
+//keeping track in the value of t
 COUNTER = COUNTER[0],
 COUNTER[t:0..6] = 
 	( agatha.paper.up -> COUNTER[t+1]
@@ -29,22 +31,16 @@ COUNTER[t:0..6] =
 	| s[6].down -> ( s[2].down -> COUNTER[0] | s[4].down -> COUNTER[0])
 	).
 
+
+// Semaphore array
 ||Sarray = (forall[i:1..6] s[i]:SEMAPHORE(0)).
 
-/*
-AGATHA = 
-	( agatha.selects ->
-		( agatha.paper.up -> agatha.spark.up ->  AGATHA
-		| agatha.spark.up -> agatha.tobacco.up -> AGATHA
-		| agatha.tobacco.up -> agatha.paper.up -> AGATHA
-		)
-	).
-*/
+
 
 AGATHA = 
 	( agatha.selects ->  agatha.paper.up -> agatha.spark.up ->  AGATHA
 	| agatha.selects ->  agatha.spark.up -> agatha.tobacco.up -> AGATHA
-	|  agatha.selects ->  agatha.tobacco.up -> agatha.paper.up -> AGATHA
+	| agatha.selects ->  agatha.tobacco.up -> agatha.paper.up -> AGATHA
 	).
 
 HORACIO =
@@ -73,11 +69,10 @@ EDGAR =
 
 ||SMOKERS =	( HORACIO || ARTHUR || EDGAR ).
 
-||CONSTRAINTS =
-	( agatha.select:SEMAPHORE(1) )
-		/{ agatha.selects/agatha.select.down,
-	 	{ horacio, arthur, edgar }.stubs.out/agatha.select.up
-	}.
+||CONSTRAINTS = ( agatha.select:SEMAPHORE(1) )
+					/{ agatha.selects/agatha.select.down,
+	 				 { horacio, arthur, edgar }.stubs.out/agatha.select.up}.
+	 				 
 
 ||MYSTERY_WRITERS =	(  RESOURCES || AGATHA || COUNTER || SMOKERS || CONSTRAINTS || Sarray)
 	<<{s[1].up,s[2].up,s[3].up,s[4].up,s[5].up,s[6].up}.
