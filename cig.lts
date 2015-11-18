@@ -1,3 +1,7 @@
+// Authors
+// Robert Stuart: 
+// Jean Lucas Ferreira - 1152120
+
 SEMAPHORE(I=0) = SEMAPHORE[I],
 SEMAPHORE[ b : 0..1 ] = 
 	( when b == 0 up -> SEMAPHORE[1]
