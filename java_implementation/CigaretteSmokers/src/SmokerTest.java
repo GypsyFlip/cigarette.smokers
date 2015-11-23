@@ -2,16 +2,18 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-public class Smoker extends Thread {
+public class SmokerTest extends Thread {
 
 	private final Set<Item> itemsNeeded;
 	private int valueNeeded;
-	private final Counter counter;
+	private final CounterTest counter;
 	private Random rand = new Random();
 	public static StringBuilder smokeOrder = new StringBuilder();
 	public static boolean running = true;
+	private int smokeRangeStart;
+	private int smokeRangeEnd;
 
-	public Smoker(String name, Item i, Counter counter) {
+	public SmokerTest(String name, Item i, CounterTest counter, int startTime, int endTime) {
 		super(name);
 		itemsNeeded = new HashSet<Item>(4);
 		for (Item foo : Item.values()) {
@@ -23,6 +25,8 @@ public class Smoker extends Thread {
 			}
 		}
 		this.counter = counter;
+		this.smokeRangeStart = startTime;
+		this.smokeRangeEnd = endTime;
 	}
 
 	@Override
@@ -57,7 +61,10 @@ public class Smoker extends Thread {
 				
 				smokeOrder.append(getName() + ",");
 				System.out.print("\n" + getName() + " begins smoke .... ");
-				sleep(Math.abs(rand.nextLong() % 5)); // smoke for a random amount of
+				
+				int randomSmokeTime = rand.nextInt((smokeRangeEnd - smokeRangeStart) + 1) + smokeRangeStart;
+				sleep(randomSmokeTime); // smoke for a random amount of
+				
 				System.out.print(" " + getName() + " ended smoking." +"\n");
 				counter.decrease();
 				counter.select.release();

@@ -1,15 +1,17 @@
 import java.util.concurrent.Semaphore;
 
-public class Counter {
+public class CounterTest {
 	public final Semaphore paper, spark, tobacco, select;
 	public final Semaphore[] semArray;
 	private int t;
-	Agent agatha = new Agent("Agatha", this);
-	private Smoker horacio = new Smoker("Horacio", Item.TOBACCO, this);
-	private Smoker arthur = new Smoker("Arthur", Item.PAPER, this);
-	private Smoker edgar = new Smoker("Edgar", Item.SPARK, this);
+	AgentTest agatha = new AgentTest("Agatha", this);
+	private SmokerTest horacio = new SmokerTest("Horacio", Item.TOBACCO, this, 0, 300);
+	private SmokerTest arthur = new SmokerTest("Arthur", Item.PAPER, this,100,400);
+	private SmokerTest edgar = new SmokerTest("Edgar", Item.SPARK, this,300,600);
+	
+	private int numberOfSuccess = 0;
 
-	public Counter() {
+	public CounterTest() {
 		t = 0;
 		paper = new Semaphore(0);
 		spark = new Semaphore(0);
@@ -50,9 +52,9 @@ public class Counter {
 			e.printStackTrace();
 		}
 		System.out.println();
-		if (Agent.smokeOrder.toString().equalsIgnoreCase(
-				Smoker.smokeOrder.toString())) {
-			System.out.println("Great Success");
+		if (Agent.smokeOrder.toString().equalsIgnoreCase(Smoker.smokeOrder.toString())) {
+			System.out.println(++numberOfSuccess);
+			System.out.println("=============   Great Success   ==============");
 		} else {
 			System.out.println("Not so great...");
 			System.out.println(Agent.smokeOrder.toString());
@@ -62,7 +64,9 @@ public class Counter {
 	}
 
 	public static void main(String[] args) {
-		new Counter();
+		new CounterTest();
+		
+
 	}
 
 }
