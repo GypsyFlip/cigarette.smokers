@@ -1,6 +1,6 @@
 // Authors
-// Robert Stuart: 1433560
-// Jean Lucas Ferreira: 1152120
+// Robert Stuart
+// Jean Lucas Ferreira
 
 SEMAPHORE(I=0) = SEMAPHORE[I],
 SEMAPHORE[ b : 0..1 ] = 
