@@ -40,7 +40,7 @@ public class CounterTest {
 	}
 
 	public synchronized void killSmokers() {
-		Smoker.running = false;
+		SmokerTest.running = false;
 		try {
 			horacio.join(100);
 			arthur.join(100);
