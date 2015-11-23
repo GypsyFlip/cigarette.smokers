@@ -51,6 +51,11 @@ public class Agent extends Thread {
 	    }
 	    i++;
 	}
+	try {	// give the smokers a small chance to use last placed ingredients and smoke before killing them
+	    sleep(500);
+	} catch (InterruptedException e) {
+	    e.printStackTrace();
+	}
 	counter.killSmokers();
     }
 

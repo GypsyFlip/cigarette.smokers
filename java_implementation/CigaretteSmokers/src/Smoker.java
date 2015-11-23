@@ -32,25 +32,17 @@ public class Smoker extends Thread {
 	while (running) {
 	    try {
 		counter.semArray[valueNeeded].acquire();
+		counter.decrease(valueNeeded);
 		for (Item item : itemsNeeded) {
 		    switch (item) {
 		    case PAPER:
 			counter.paper.acquire();
-			if (counter.semArray[Item.PAPER.getValue()].availablePermits() == 1) {
-			    counter.semArray[Item.PAPER.getValue()].acquire();
-			}
 			break;
 		    case SPARK:
 			counter.spark.acquire();
-			if (counter.semArray[Item.SPARK.getValue()].availablePermits() == 1) {
-			    counter.semArray[Item.SPARK.getValue()].acquire();
-			}
 			break;
 		    case TOBACCO:
 			counter.tobacco.acquire();
-			if (counter.semArray[Item.TOBACCO.getValue()].availablePermits() == 1) {
-			    counter.semArray[Item.TOBACCO.getValue()].acquire();
-			}
 			break;
 		    default:
 			break;
@@ -61,7 +53,6 @@ public class Smoker extends Thread {
 		System.out.print(getName() + " begins smoke .... ");
 		sleep(rand.nextInt(str.max - str.min + 1) + str.min); // smoke for a random amount of time
 		System.out.print(" " + getName() + " ended smoking." + "\n");
-		counter.decrease();
 		counter.select.release();
 	    } catch (InterruptedException e) {
 		System.out.println(getName() + " was waiting, but didn't get his last smoke...");

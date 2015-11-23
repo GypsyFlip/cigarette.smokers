@@ -35,7 +35,23 @@ public class Counter {
 	notifyAll();
     }
 
-    public synchronized void decrease() {
+    public synchronized void decrease(int val) throws InterruptedException {
+	switch (val) {
+	case 3:
+	    if (semArray[1].availablePermits() == 1) semArray[1].acquire();
+	    else semArray[2].acquire();
+	    break;
+	case 5:
+	    if (semArray[1].availablePermits() == 1) semArray[1].acquire();
+	    else semArray[4].acquire();
+	    break;
+	case 6:
+	    if (semArray[2].availablePermits() == 1) semArray[2].acquire();
+	    else semArray[4].acquire();
+	    break;
+	default:
+	    break;
+	}
 	t = 0;
 	notifyAll();
     }
@@ -49,7 +65,7 @@ public class Counter {
 	    horacio.interrupt();
 	    arthur.interrupt();
 	    edgar.interrupt();
-	    Thread.sleep(10);	// tiny wait period for each smoker thread to end (not necessary to do this)
+	    Thread.sleep(100);	// tiny wait period for each smoker thread to end from the interrupt (not necessary to do this, but formats the output)
 	} catch (InterruptedException e) {
 	    e.printStackTrace();
 	}
@@ -57,13 +73,13 @@ public class Counter {
 	if (Agent.smokeOrder.toString().equalsIgnoreCase(Smoker.smokeOrder.toString())) {// test if the list the smokers made agrees with the list the agent made
 	    System.out.println("Great Success");
 	    System.out.println(agatha.getName() + " put ingredients down " + agatha.getDoFor() + " times.");
-	    System.out.print(horacio.getName() + " smoked \t" + horacio.getSmokeCounter() + " times. -> ");
+	    System.out.print(horacio.getName() + " smoked: \t" + horacio.getSmokeCounter() + " times. -> ");
 	    System.out.println(String.valueOf(100 * horacio.getSmokeCounter() / (double) agatha.getDoFor()) + "%");
 
-	    System.out.print(arthur.getName() + " smoked \t" + arthur.getSmokeCounter() + " times. -> ");
+	    System.out.print(arthur.getName() + " smoked: \t" + arthur.getSmokeCounter() + " times. -> ");
 	    System.out.println(String.valueOf(100 * arthur.getSmokeCounter() / (double) agatha.getDoFor()) + "%");
 
-	    System.out.print(edgar.getName() + " smoked \t" + edgar.getSmokeCounter() + " times. -> ");
+	    System.out.print(edgar.getName() + " smoked: \t" + edgar.getSmokeCounter() + " times. -> ");
 	    System.out.println(String.valueOf(100 * edgar.getSmokeCounter() / (double) agatha.getDoFor()) + "%");
 
 	    System.out.println("Total Smokes: \t" + String.valueOf(horacio.getSmokeCounter() + arthur.getSmokeCounter() + edgar.getSmokeCounter()));
@@ -77,10 +93,10 @@ public class Counter {
     /*
      * Create an instance of Counter which itself spawns 3 smoker threads (Horacio, Agatha, Edgar) that smoke for random amounts of time (in ms) within the given
      * SmokeTimeRange. Counter also starts 1 agent thread (Agatha) that places ingredients on the table the given number of times. Note: with max smokeTime ~ 7ms and
-     * agent doFor ~10000 the completion time is ~33s so increase the smokeTimeRange and agent doFor at your own peril ;)
+     * agent doFor ~10000 the completion time is ~33s so increase the smokeTimeRange and agent doFor at your own peril ;).
      */
     public static void main(String[] args) {
-	new Counter(new SmokeTimeRange(0, 5), new SmokeTimeRange(2, 4), new SmokeTimeRange(1, 7), 10000);
+	new Counter(new SmokeTimeRange(0, 1), new SmokeTimeRange(0, 5), new SmokeTimeRange(2, 6), 10000);
     }
 
 }
