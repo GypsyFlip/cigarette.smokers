@@ -56,7 +56,7 @@ public class Counter {
 	notifyAll();
     }
 
-    public synchronized void killSmokers() {
+    public void killSmokers() {
 	Smoker.running = false;
 	try {
 	    horacio.join(100);
@@ -73,13 +73,13 @@ public class Counter {
 	if (Agent.smokeOrder.toString().equalsIgnoreCase(Smoker.smokeOrder.toString())) {// test if the list the smokers made agrees with the list the agent made
 	    System.out.println("Great Success");
 	    System.out.println(agatha.getName() + " put ingredients down " + agatha.getDoFor() + " times.");
-	    System.out.print(horacio.getName() + " smoked: \t" + horacio.getSmokeCounter() + " times. -> ");
+	    System.out.print(horacio.getName() + " smoked \t" + horacio.getSmokeCounter() + " times. -> ");
 	    System.out.println(String.valueOf(100 * horacio.getSmokeCounter() / (double) agatha.getDoFor()) + "%");
 
-	    System.out.print(arthur.getName() + " smoked: \t" + arthur.getSmokeCounter() + " times. -> ");
+	    System.out.print(arthur.getName() + " smoked \t" + arthur.getSmokeCounter() + " times. -> ");
 	    System.out.println(String.valueOf(100 * arthur.getSmokeCounter() / (double) agatha.getDoFor()) + "%");
 
-	    System.out.print(edgar.getName() + " smoked: \t" + edgar.getSmokeCounter() + " times. -> ");
+	    System.out.print(edgar.getName() + " smoked \t" + edgar.getSmokeCounter() + " times. -> ");
 	    System.out.println(String.valueOf(100 * edgar.getSmokeCounter() / (double) agatha.getDoFor()) + "%");
 
 	    System.out.println("Total Smokes: \t" + String.valueOf(horacio.getSmokeCounter() + arthur.getSmokeCounter() + edgar.getSmokeCounter()));
